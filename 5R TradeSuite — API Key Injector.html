@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5R TradeSuite — API Key Injector</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d0f0a; color: #e8e0d0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .card { background: #141710; border: 1px solid #2a3020; border-radius: 16px; padding: 40px; max-width: 560px; width: 100%; }
+  .logo { font-size: 28px; margin-bottom: 6px; }
+  h1 { font-size: 22px; font-weight: 700; color: #e8e0d0; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: #8a7f6a; margin-bottom: 32px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: #c8860a; margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+  input[type="text"], input[type="password"] { width: 100%; background: #0d0f0a; border: 1px solid #2a3020; border-radius: 8px; padding: 12px 16px; color: #e8e0d0; font-size: 14px; font-family: monospace; outline: none; transition: border-color 0.2s; margin-bottom: 20px; }
+  input:focus { border-color: #c8860a; box-shadow: 0 0 0 3px rgba(200,134,10,0.1); }
+  .file-drop { border: 2px dashed #2a3020; border-radius: 10px; padding: 28px; text-align: center; margin-bottom: 20px; cursor: pointer; transition: all 0.2s; background: #0d0f0a; }
+  .file-drop:hover, .file-drop.drag-over { border-color: #c8860a; background: rgba(200,134,10,0.04); }
+  .file-drop p { font-size: 14px; color: #8a7f6a; }
+  .file-drop p span { color: #c8860a; font-weight: 600; }
+  .file-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 20px; max-height: 200px; overflow-y: auto; }
+  .file-item { background: #1a1e14; border: 1px solid #2a3020; border-radius: 6px; padding: 8px 12px; font-size: 12px; color: #8a7f6a; display: flex; justify-content: space-between; align-items: center; }
+  .file-item .fname { color: #e8e0d0; font-weight: 500; }
+  .file-item .fstatus { font-size: 11px; }
+  .file-item .fstatus.ready { color: #c8860a; }
+  .file-item .fstatus.done { color: #4a7c3f; }
+  .file-item .fstatus.skip { color: #8a7f6a; }
+  button.primary { width: 100%; background: linear-gradient(135deg, #c8860a, #d4a017); border: none; border-radius: 8px; padding: 14px; color: #0d0f0a; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em; }
+  button.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  button.primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .result { margin-top: 20px; padding: 16px; border-radius: 8px; font-size: 13px; display: none; }
+  .result.success { background: rgba(74,124,63,0.15); border: 1px solid #4a7c3f; color: #a8d5a0; }
+  .result.error { background: rgba(200,50,50,0.1); border: 1px solid #7a3535; color: #e8a0a0; }
+  .toggle-key { background: none; border: none; color: #8a7f6a; cursor: pointer; font-size: 12px; float: right; margin-top: -2px; text-decoration: underline; }
+  .step { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 20px; }
+  .step-num { background: #c8860a; color: #0d0f0a; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .step-text { font-size: 13px; color: #8a7f6a; line-height: 1.5; }
+  .step-text strong { color: #e8e0d0; }
+  .divider { border: none; border-top: 1px solid #2a3020; margin: 24px 0; }
+  #fileInput { display: none; }
+  .count-badge { background: #c8860a; color: #0d0f0a; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-left: 8px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">🦌</div>
+  <h1>API Key Injector</h1>
+  <p class="sub">5R TradeSuite AI · AntlerShedOK Bot Suite · Runs 100% on your computer</p>
+
+  <hr class="divider">
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-text"><strong>Paste your Claude API key below.</strong> It stays on your computer — never sent anywhere.</div>
+  </div>
+
+  <label>Claude API Key <button class="toggle-key" onclick="toggleKeyVisibility()">show/hide</button></label>
+  <input type="password" id="apiKey" placeholder="sk-ant-api03-..." autocomplete="off" />
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-text"><strong>Drop all 15 bot HTML files</strong> onto the zone below (or click to select). You can drag the whole folder contents at once.</div>
+  </div>
+
+  <div class="file-drop" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <p>📂 Drag & drop your bot HTML files here<br><span>or click to browse</span></p>
+  </div>
+  <input type="file" id="fileInput" multiple accept=".html" />
+
+  <div class="file-list" id="fileList" style="display:none"></div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-text"><strong>Click Inject & Download.</strong> Each file gets downloaded with your key baked in, ready to use.</div>
+  </div>
+
+  <button class="primary" id="injectBtn" onclick="injectAll()" disabled>
+    Inject API Key & Download All Files
+  </button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+  let selectedFiles = [];
+
+  // Drag and drop
+  const dropZone = document.getElementById('dropZone');
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    handleFiles(Array.from(e.dataTransfer.files).filter(f => f.name.endsWith('.html')));
+  });
+
+  document.getElementById('fileInput').addEventListener('change', e => {
+    handleFiles(Array.from(e.target.files).filter(f => f.name.endsWith('.html')));
+  });
+
+  function handleFiles(files) {
+    selectedFiles = files;
+    const list = document.getElementById('fileList');
+    list.style.display = files.length ? 'flex' : 'none';
+    list.innerHTML = '';
+    let hasKey = 0;
+    files.forEach(f => {
+      const item = document.createElement('div');
+      item.className = 'file-item';
+      item.id = 'file-' + f.name.replace(/[^a-z0-9]/gi, '_');
+      item.innerHTML = `<span class="fname">${f.name}</span><span class="fstatus ready" id="status-${f.name.replace(/[^a-z0-9]/gi,'_')}">⏳ queued</span>`;
+      list.appendChild(item);
+      hasKey++;
+    });
+    // Update drop zone text
+    dropZone.querySelector('p').innerHTML = `✅ <span>${files.length} file${files.length !== 1 ? 's' : ''} loaded</span> · click to change`;
+    document.getElementById('injectBtn').disabled = files.length === 0 || !document.getElementById('apiKey').value.trim();
+    checkReady();
+  }
+
+  document.getElementById('apiKey').addEventListener('input', checkReady);
+
+  function checkReady() {
+    const key = document.getElementById('apiKey').value.trim();
+    const hasFiles = selectedFiles.length > 0;
+    document.getElementById('injectBtn').disabled = !key || !hasFiles;
+    if (key && hasFiles) {
+      document.getElementById('injectBtn').textContent = `Inject API Key & Download All ${selectedFiles.length} Files`;
+    }
+  }
+
+  function toggleKeyVisibility() {
+    const input = document.getElementById('apiKey');
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  async function injectAll() {
+    const apiKey = document.getElementById('apiKey').value.trim();
+    if (!apiKey) { alert('Please enter your API key first.'); return; }
+    if (!selectedFiles.length) { alert('Please select your HTML files first.'); return; }
+
+    document.getElementById('injectBtn').disabled = true;
+    document.getElementById('injectBtn').textContent = 'Injecting...';
+
+    let injected = 0;
+    let skipped = 0;
+
+    for (const file of selectedFiles) {
+      const statusId = 'status-' + file.name.replace(/[^a-z0-9]/gi, '_');
+      const statusEl = document.getElementById(statusId);
+
+      const text = await file.text();
+
+      // Check if file has the placeholder
+      if (text.includes('YOUR_API_KEY_HERE') || text.includes("const API_KEY=''") || text.includes('const API_KEY=""')) {
+        // Replace the placeholder
+        let fixed = text
+          .replace(/const API_KEY\s*=\s*['"]YOUR_API_KEY_HERE['"]/g, `const API_KEY='${apiKey}'`)
+          .replace(/const API_KEY\s*=\s*['"]{2}/g, `const API_KEY='${apiKey}'`)
+          // Also fix the hardcoded file:/// paths to relative
+          .replace(/href="file:\/\/\/[^"]*\/([\w%\-\.]+\.html)"/g, (match, filename) => {
+            const decoded = decodeURIComponent(filename);
+            return `href="${decoded}"`;
+          })
+          // Remove saved-from comment
+          .replace(/<!--\s*saved from url=\([^)]+\)[^-]*-->/g, '');
+
+        // Download the fixed file
+        const blob = new Blob([fixed], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        if (statusEl) statusEl.innerHTML = `<span style="color:#4a7c3f">✅ done</span>`;
+        injected++;
+
+        // Small delay between downloads so browser doesn't block them
+        await new Promise(r => setTimeout(r, 300));
+
+      } else if (text.includes(apiKey)) {
+        if (statusEl) statusEl.innerHTML = `<span style="color:#8a7f6a">⏭️ already has key</span>`;
+        skipped++;
+      } else {
+        // Key placeholder not found — might use different variable name
+        // Try to find any API key pattern and replace
+        const hasAnyKeyVar = /const\s+API_KEY\s*=/.test(text);
+        if (hasAnyKeyVar) {
+          const fixed = text.replace(/const\s+API_KEY\s*=\s*['"][^'"]*['"]/g, `const API_KEY='${apiKey}'`);
+          const blob = new Blob([fixed], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.name;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          if (statusEl) statusEl.innerHTML = `<span style="color:#4a7c3f">✅ done</span>`;
+          injected++;
+          await new Promise(r => setTimeout(r, 300));
+        } else {
+          if (statusEl) statusEl.innerHTML = `<span style="color:#d97706">⚠️ no key slot found</span>`;
+          skipped++;
+        }
+      }
+    }
+
+    const resultEl = document.getElementById('result');
+    resultEl.style.display = 'block';
+    if (injected > 0) {
+      resultEl.className = 'result success';
+      resultEl.innerHTML = `✅ <strong>${injected} file${injected !== 1 ? 's' : ''} updated and downloaded.</strong>${skipped > 0 ? ` ${skipped} skipped.` : ''}<br><br>Now put ALL the downloaded files into one folder with the hub file and test by double-clicking the hub.`;
+    } else {
+      resultEl.className = 'result error';
+      resultEl.innerHTML = `⚠️ No files were updated. The API_KEY placeholder may use a different format. Upload one file to Claude for inspection.`;
+    }
+
+    document.getElementById('injectBtn').disabled = false;
+    document.getElementById('injectBtn').textContent = `✅ Done — ${injected} files downloaded`;
+  }
+</script>
+</body>
+</html>
