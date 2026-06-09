@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antler Shed Oklahoma — Product</title>
+<link rel="stylesheet" href="store.css">
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a href="index.html" class="brand">🦌 ANTLER SHED OKLAHOMA</a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="product.html?series=slider">Slider</a>
+    <a href="product.html?series=drop">Drop</a>
+    <a href="product.html?series=bowgun">Bow/Gun</a>
+    <a href="product.html?series=accessories">Accessories</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span class="cart-badge">0</span></a>
+  </div>
+</div></nav>
+
+<main class="wrap" id="prod-root">
+  <div class="crumbs"><a href="index.html">Home</a> › <span id="crumb-name">Product</span></div>
+  <div id="prod-body"></div>
+</main>
+
+<footer><div class="wrap">
+  Antler Shed Oklahoma · 705 S. Ranchwood Blvd, Yukon, OK 73099 · <a href="tel:3185404499">318-540-4499</a> · <a href="mailto:Antlershedok@gmail.com">Antlershedok@gmail.com</a> · By appointment only
+</div></footer>
+
+<script src="catalog.js"></script>
+<script>
+(function(){
+  var params = new URLSearchParams(location.search);
+  var key = params.get("series") || "slider";
+  var s = window.ANTLER_CATALOG[key];
+  if(!s){ document.getElementById("prod-body").innerHTML = "<p>Product not found. <a href='index.html'>Back home</a></p>"; return; }
+  document.title = "Antler Shed Oklahoma — " + s.name;
+  document.getElementById("crumb-name").textContent = s.name;
+  function money(n){ return "$" + Number(n).toLocaleString("en-US"); }
+  var rows = s.items.map(function(it){
+    return '<div class="size-row">' +
+      '<div class="size-main"><div class="sz">' + s.name.replace(" Series","") + " " + it.size + '</div>' +
+        '<div class="meta">Model ' + it.model + ' · ' + it.weight + (it.note ? ' · ' + it.note : '') + '</div></div>' +
+      '<div class="size-price">' + money(it.price) + '</div>' +
+      '<button class="btn-add" data-add="' + it.id + '" data-name="' + (s.name + ' ' + it.size).replace(/"/g,'') + '" data-price="' + it.price + '">Add to Cart</button>' +
+    '</div>';
+  }).join("");
+  document.getElementById("prod-body").innerHTML =
+    '<div class="phero">' +
+      '<img src="' + s.image + '" alt="' + s.name + '">' +
+      '<div><span class="tagpill">' + s.tag + '</span><h1>' + s.name + '</h1>' +
+        '<p class="blurb">' + s.blurb + '</p>' +
+        '<ul class="features">' + s.features.map(function(f){return "<li>"+f+"</li>";}).join("") + '</ul></div>' +
+    '</div>' +
+    '<div class="sizes"><h2>Sizes &amp; Pricing</h2>' + rows +
+      '<p class="pnote">Prices shown are for the unit. Delivery, installation, and leg/feeder combos are quoted separately. Custom builds available — <a href="cart.html">add to cart &amp; request a quote</a> or call 318-540-4499.</p>' +
+    '</div>';
+})();
+</script>
+<script src="cart.js"></script>
+</body>
+</html>

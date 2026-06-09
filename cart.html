@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — Antler Shed Oklahoma</title>
+<link rel="stylesheet" href="store.css">
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a href="index.html" class="brand">🦌 ANTLER SHED OKLAHOMA</a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="product.html?series=slider">Slider</a>
+    <a href="product.html?series=drop">Drop</a>
+    <a href="product.html?series=bowgun">Bow/Gun</a>
+    <a href="product.html?series=accessories">Accessories</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span class="cart-badge">0</span></a>
+  </div>
+</div></nav>
+
+<main class="wrap" id="cart-main" style="min-height:50vh">
+  <div class="crumbs"><a href="index.html">Home</a> › Cart</div>
+  <h1 style="color:#3b2f2a">Your Cart</h1>
+
+  <div id="cart-items"></div>
+  <div class="cart-summary"><span>Estimated Total</span><span id="cart-total">$0</span></div>
+
+  <div id="quote-wrap" class="quote-box">
+    <h3>Request Your Quote</h3>
+    <p>Send us your cart and we’ll come back with delivery &amp; installation pricing for your location. No payment now — this reserves your build and starts your quote.</p>
+    <form id="quote-form">
+      <input name="name" placeholder="Your name" required>
+      <input name="phone" placeholder="Phone" required>
+      <input name="email" type="email" placeholder="Email" required>
+      <textarea name="notes" rows="3" placeholder="Anything else? (location, timeline, custom requests)"></textarea>
+      <button type="submit" class="btn-primary">Request Quote</button>
+    </form>
+  </div>
+</main>
+
+<footer><div class="wrap">
+  Antler Shed Oklahoma · 705 S. Ranchwood Blvd, Yukon, OK 73099 · <a href="tel:3185404499">318-540-4499</a> · <a href="mailto:Antlershedok@gmail.com">Antlershedok@gmail.com</a> · By appointment only
+</div></footer>
+
+<script src="catalog.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>
