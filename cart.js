@@ -2,6 +2,7 @@
 (function () {
   var KEY = "antler_cart";
   var QUOTE_EP = "https://tradesuiteai.app.n8n.cloud/webhook/antlershed-quote";
+  var CHECKOUT_EP = "https://tradesuiteai.app.n8n.cloud/webhook/antlershed-checkout";
 
   function get() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
   function save(c) { localStorage.setItem(KEY, JSON.stringify(c)); updateBadges(); }
@@ -58,6 +59,7 @@
         '</div>';
     }).join("");
     var t = document.getElementById("cart-total"); if (t) t.textContent = money(total());
+    var dep = document.getElementById("cart-deposit"); if (dep) dep.textContent = money(Math.round(total() * 0.20));
     box.querySelectorAll("[data-inc]").forEach(function (b) { b.onclick = function () { var i = get().find(function (x) { return x.id === b.dataset.inc; }); setQty(b.dataset.inc, i.qty + 1); }; });
     box.querySelectorAll("[data-dec]").forEach(function (b) { b.onclick = function () { var i = get().find(function (x) { return x.id === b.dataset.dec; }); setQty(b.dataset.dec, i.qty - 1); }; });
     box.querySelectorAll("[data-rm]").forEach(function (b) { b.onclick = function () { remove(b.dataset.rm); }; });
@@ -71,18 +73,14 @@
       items: get(), total: total()
     };
     if (!payload.items.length) { alert("Your cart is empty."); return; }
-    btn.disabled = true; btn.textContent = "Sending…";
-    fetch(QUOTE_EP, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) })
+    btn.disabled = true; btn.textContent = "Taking you to secure checkout…";
+    fetch(CHECKOUT_EP, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) })
       .then(function (r) { return r.json(); })
-      .then(function () {
-        localStorage.removeItem(KEY); updateBadges();
-        document.getElementById("cart-main").innerHTML =
-          '<div style="text-align:center;padding:60px 20px"><div style="font-size:48px">🦌✅</div>' +
-          '<h2 style="color:#3b2f2a">Quote request sent!</h2>' +
-          '<p style="color:#7a6a58;max-width:480px;margin:12px auto">Thanks, ' + (payload.name || "") + '. Our team will reach out shortly with pricing on delivery & installation. Want to talk now? Call <strong>318-540-4499</strong>.</p>' +
-          '<a href="index.html" style="display:inline-block;margin-top:16px;background:#7a5230;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Back to Home</a></div>';
+      .then(function (j) {
+        if (j && j.url) { window.location.href = j.url; }
+        else { throw new Error("no url"); }
       })
-      .catch(function () { btn.disabled = false; btn.textContent = "Request Quote"; alert("Something went wrong — please call 318-540-4499 or email Antlershedok@gmail.com."); });
+      .catch(function () { btn.disabled = false; btn.textContent = "Reserve with 20% Deposit"; alert("Checkout hiccup — please call 318-540-4499 or email Antlershedok@gmail.com."); });
   }
 
   window.AntlerCart = { add: add, get: get, count: count, total: total, money: money, renderCart: renderCart, submitQuote: submitQuote };

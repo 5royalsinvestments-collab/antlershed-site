@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schedule Pickup — Antler Shed Oklahoma</title>
+<link rel="stylesheet" href="store.css">
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a href="index.html" class="brand">🦌 ANTLER SHED OKLAHOMA</a>
+  <div class="links"><a href="index.html">Home</a><a href="cart.html" class="cart-link">🛒 Cart <span class="cart-badge">0</span></a></div>
+</div></nav>
+
+<main class="wrap" id="sched-main" style="min-height:60vh;max-width:620px">
+  <div style="text-align:center;padding:30px 0 6px"><div style="font-size:46px">🦌✅</div>
+    <h1 style="color:#3b2f2a;margin:.2em 0">Deposit received — thank you!</h1>
+    <p style="color:#7a6a58">Your build is reserved. Pick a pickup/consult time below and we’ll confirm by phone. Delivery &amp; installation, if you need them, are quoted separately.</p>
+  </div>
+
+  <div class="quote-box">
+    <h3>Choose your pickup time</h3>
+    <form id="sched-form">
+      <label style="font-weight:700;color:#3b2f2a;font-size:14px">Preferred date</label>
+      <input name="date" type="date" required>
+      <label style="font-weight:700;color:#3b2f2a;font-size:14px">Preferred time</label>
+      <select name="time" required>
+        <option value="">Select a time…</option>
+        <option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option>
+        <option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option>
+        <option>3:00 PM</option><option>4:00 PM</option>
+      </select>
+      <textarea name="notes" rows="2" placeholder="Anything we should know? (trailer size, delivery interest, etc.)"></textarea>
+      <button type="submit" class="btn-primary">Confirm Pickup Time</button>
+    </form>
+    <p style="text-align:center;margin:12px 0 0;font-size:13px;color:#7a6a58">Appointment-only · 705 S. Ranchwood Blvd, Yukon, OK · 318-540-4499</p>
+  </div>
+</main>
+
+<footer><div class="wrap">Antler Shed Oklahoma · <a href="tel:3185404499">318-540-4499</a> · <a href="mailto:Antlershedok@gmail.com">Antlershedok@gmail.com</a></div></footer>
+
+<script>
+  // payment done — clear the cart
+  try { localStorage.removeItem("antler_cart"); } catch (e) {}
+  (function () {
+    var cs = new URLSearchParams(location.search).get("cs") || "";
+    var EP = "https://tradesuiteai.app.n8n.cloud/webhook/antlershed-schedule";
+    var d = document.querySelector('input[name=date]'); if (d) d.min = new Date().toISOString().slice(0, 10);
+    document.getElementById("sched-form").addEventListener("submit", function (e) {
+      e.preventDefault(); var f = e.target, btn = f.querySelector('[type=submit]');
+      btn.disabled = true; btn.textContent = "Booking…";
+      fetch(EP, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify({ cs: cs, date: f.date.value, time: f.time.value, notes: f.notes.value }) })
+        .then(function (r) { return r.json(); })
+        .then(function () {
+          document.getElementById("sched-main").innerHTML =
+            '<div style="text-align:center;padding:70px 20px"><div style="font-size:48px">📅✅</div>' +
+            '<h1 style="color:#3b2f2a">You’re booked!</h1>' +
+            '<p style="color:#7a6a58;max-width:460px;margin:12px auto">We’ve got your deposit and your requested pickup time. Our team will call to confirm the details. See you soon! 🦌</p>' +
+            '<a href="index.html" style="display:inline-block;margin-top:16px;background:#7a5230;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700">Back to Home</a></div>';
+        })
+        .catch(function () { btn.disabled = false; btn.textContent = "Confirm Pickup Time"; alert("Couldn’t save that — please call 318-540-4499 and we’ll set your time."); });
+    });
+  })();
+</script>
+<script src="chat-widget.js"></script>
+</body>
+</html>
