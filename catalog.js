@@ -54,19 +54,19 @@ window.ANTLER_CATALOG = {
   feeders: {
     name: "Feeders",
     tag: "Texas Wildlife Supply",
-    image: "images/gallery/feeder-2.jpg",
+    image: "images/gallery/feeder-2.jpg?v=2",
     blurb: "Texas Wildlife Supply feeders — gravity, broadcast, and road feeders to keep your stand fed all season. Built tough and ready to run.",
     features: ["Gravity & broadcast options", "Road feeders with remote", "Optional timers", "Catwalk & ladder on the big ones"],
     items: [
-      { id: "F-50R", size: "50#", model: "F-50R", price: 400, weight: "Monster Road Feeder", note: "50 lb road feeder with remote (TWS)", image: "images/gallery/feeder-8.jpg" },
-      { id: "F-100R", size: "100#", model: "F-100R", price: 450, weight: "Monster Road Feeder", note: "100 lb road feeder with remote (TWS)", image: "images/gallery/feeder-7.jpg" },
-      { id: "F-350G", size: "350#", model: "F-350G", price: 650, weight: "Gravity Feeder", note: "350 lb gravity-feed (Texas Wildlife Supply)", image: "images/gallery/feeder-2.jpg" },
-      { id: "F-600G", size: "600#", model: "F-600G", price: 800, weight: "Gravity Feeder", note: "600 lb gravity-feed (TWS)", image: "images/gallery/feeder-3.jpg" },
-      { id: "F-600T", size: "600# + Timer", model: "F-600T", price: 1200, weight: "Gravity Feeder", note: "600 lb gravity-feed with timer (TWS)", image: "images/gallery/feeder-3.jpg" },
-      { id: "F-2000", size: "2000# + Catwalk", model: "F-2000", price: 1900, weight: "Gravity Feeder", note: "2,000 lb with catwalk & ladder (TWS)", image: "images/gallery/feeder-1.jpg" },
-      { id: "F-2000T", size: "2000# + Catwalk + Timer", model: "F-2000T", price: 2300, weight: "Gravity Feeder", note: "2,000 lb with catwalk, ladder & timer (TWS)", image: "images/gallery/feeder-1.jpg" },
-      { id: "F-600B", size: "600# Lucky Buck", model: "F-600B", price: 800, weight: "Broadcast Feeder", note: "600 lb Lucky Buck broadcast feeder (TWS)", image: "images/gallery/feeder-5.jpg" },
-      { id: "F-2000B", size: "2000# Lucky Buck", model: "F-2000B", price: 1500, weight: "Broadcast Feeder", note: "2,000 lb Lucky Buck broadcast feeder (TWS)", image: "images/gallery/feeder-6.jpg" }
+      { id: "F-50R", size: "50#", model: "F-50R", price: 400, weight: "Monster Road Feeder", note: "50 lb road feeder with remote (TWS)", image: "images/gallery/feeder-8.jpg?v=2" },
+      { id: "F-100R", size: "100#", model: "F-100R", price: 450, weight: "Monster Road Feeder", note: "100 lb road feeder with remote (TWS)", image: "images/gallery/feeder-7.jpg?v=2" },
+      { id: "F-350G", size: "350#", model: "F-350G", price: 650, weight: "Gravity Feeder", note: "350 lb gravity-feed (Texas Wildlife Supply)", image: "images/gallery/feeder-2.jpg?v=2" },
+      { id: "F-600G", size: "600#", model: "F-600G", price: 800, weight: "Gravity Feeder", note: "600 lb gravity-feed (TWS)", image: "images/gallery/feeder-3.jpg?v=2" },
+      { id: "F-600T", size: "600# + Timer", model: "F-600T", price: 1200, weight: "Gravity Feeder", note: "600 lb gravity-feed with timer (TWS)", image: "images/gallery/feeder-3.jpg?v=2" },
+      { id: "F-2000", size: "2000# + Catwalk", model: "F-2000", price: 1900, weight: "Gravity Feeder", note: "2,000 lb with catwalk & ladder (TWS)", image: "images/gallery/feeder-1.jpg?v=2" },
+      { id: "F-2000T", size: "2000# + Catwalk + Timer", model: "F-2000T", price: 2300, weight: "Gravity Feeder", note: "2,000 lb with catwalk, ladder & timer (TWS)", image: "images/gallery/feeder-1.jpg?v=2" },
+      { id: "F-600B", size: "600# Lucky Buck", model: "F-600B", price: 800, weight: "Broadcast Feeder", note: "600 lb Lucky Buck broadcast feeder (TWS)", image: "images/gallery/feeder-5.jpg?v=2" },
+      { id: "F-2000B", size: "2000# Lucky Buck", model: "F-2000B", price: 1500, weight: "Broadcast Feeder", note: "2,000 lb Lucky Buck broadcast feeder (TWS)", image: "images/gallery/feeder-6.jpg?v=2" }
     ]
   }
 };
