@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Antler Shed Oklahoma — Product</title>
-<link rel="stylesheet" href="store.css">
+<title>Antler Shed Oklahoma — Shop</title>
+<link rel="stylesheet" href="store.css?v=2">
 </head>
 <body>
 <nav class="nav"><div class="wrap">
   <a href="index.html" class="brand">🦌 ANTLER SHED OKLAHOMA</a>
   <div class="links">
     <a href="index.html">Home</a>
-    <a href="product.html?series=slider">Slider</a>
-    <a href="product.html?series=drop">Drop</a>
-    <a href="product.html?series=bowgun">Bow/Gun</a>
+    <a href="product.html?cat=blinds">Blinds</a>
     <a href="product.html?series=feeders">Feeders</a>
     <a href="product.html?series=accessories">Accessories</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="index.html#contact">Contact</a>
     <a href="cart.html" class="cart-link">🛒 Cart <span class="cart-badge">0</span></a>
   </div>
 </div></nav>
 
 <main class="wrap" id="prod-root">
-  <div class="crumbs"><a href="index.html">Home</a> › <span id="crumb-name">Product</span></div>
+  <div class="crumbs"><a href="index.html">Home</a> › <span id="crumb-name">Shop</span></div>
   <div id="prod-body"></div>
 </main>
 
@@ -29,20 +29,45 @@
   Antler Shed Oklahoma · 705 S. Ranchwood Blvd, Yukon, OK 73099 · <a href="tel:3185404499">318-540-4499</a> · <a href="mailto:Antlershedok@gmail.com">Antlershedok@gmail.com</a> · By appointment only
 </div></footer>
 
-<script src="catalog.js?v=2"></script>
+<script src="catalog.js?v=3"></script>
 <script>
 (function(){
   var params = new URLSearchParams(location.search);
+  var body = document.getElementById("prod-body");
+  function money(n){ return "$" + Number(n).toLocaleString("en-US"); }
+  function crumb(t){ document.getElementById("crumb-name").textContent = t; }
+
+  // ---- Category view: Blinds -> show the 3 series as clickable cards ----
+  if (params.get("cat") === "blinds") {
+    document.title = "Antler Shed Oklahoma — Hunting Blinds";
+    crumb("Hunting Blinds");
+    var keys = ["slider","drop","bowgun"];
+    var cards = keys.map(function(k){
+      var s = window.ANTLER_CATALOG[k]; if(!s) return "";
+      var from = Math.min.apply(null, s.items.map(function(i){return i.price;}));
+      return '<a class="cat-card" href="product.html?series=' + k + '">' +
+        '<img src="' + s.image + '" alt="' + s.name + '">' +
+        '<div class="cat-body"><span class="tagpill">' + s.tag + '</span><h3>' + s.name + '</h3>' +
+        '<p>' + s.blurb + '</p>' +
+        '<div class="cat-foot"><span class="from">From ' + money(from) + '</span><span class="go">View details &amp; sizes →</span></div>' +
+        '</div></a>';
+    }).join("");
+    body.innerHTML = '<h1 style="color:#3b2f2a;margin:.2em 0 0">Hunting Blinds</h1>' +
+      '<p class="blurb" style="margin-top:6px">Three purpose-built series. Tap one to see full specs, sizes, and pricing.</p>' +
+      '<div class="cat-grid">' + cards + '</div>';
+    return;
+  }
+
+  // ---- Single series / category detail (slider, drop, bowgun, feeders, accessories) ----
   var key = params.get("series") || "slider";
   var s = window.ANTLER_CATALOG[key];
-  if(!s){ document.getElementById("prod-body").innerHTML = "<p>Product not found. <a href='index.html'>Back home</a></p>"; return; }
+  if(!s){ body.innerHTML = "<p style='padding:30px 0'>Item not found. <a href='index.html'>Back home</a></p>"; return; }
   document.title = "Antler Shed Oklahoma — " + s.name;
-  document.getElementById("crumb-name").textContent = s.name;
-  function money(n){ return "$" + Number(n).toLocaleString("en-US"); }
-  var isAcc = (key === "accessories" || key === "feeders");
+  crumb(s.name);
+  var isItem = (key === "accessories" || key === "feeders");
   var rows = s.items.map(function(it){
-    var label = isAcc ? (it.size + " " + it.weight) : (s.name.replace(" Series","") + " " + it.size);
-    var cartName = (isAcc ? (it.weight + " " + it.size) : (s.name + " " + it.size)).replace(/"/g,'');
+    var label = isItem ? (it.size + " " + it.weight) : (s.name.replace(" Series","") + " " + it.size);
+    var cartName = (isItem ? (it.weight + " " + it.size) : (s.name + " " + it.size)).replace(/"/g,'');
     return '<div class="size-row">' +
       (it.image ? '<img class="row-thumb" src="' + it.image + '" alt="' + it.model + '" loading="lazy">' : '') +
       '<div class="size-main"><div class="sz">' + label + '</div>' +
@@ -51,15 +76,17 @@
       '<button class="btn-add" data-add="' + it.id + '" data-name="' + cartName + '" data-price="' + it.price + '">Add to Cart</button>' +
     '</div>';
   }).join("");
-  document.getElementById("prod-body").innerHTML =
+  var backLink = (key==="slider"||key==="drop"||key==="bowgun") ? '<a href="product.html?cat=blinds" style="color:#7a5230;font-weight:600;font-size:14px">← All blinds</a>' : '';
+  body.innerHTML =
+    (backLink ? '<div style="padding-bottom:8px">'+backLink+'</div>' : '') +
     '<div class="phero">' +
       '<img src="' + s.image + '" alt="' + s.name + '">' +
       '<div><span class="tagpill">' + s.tag + '</span><h1>' + s.name + '</h1>' +
         '<p class="blurb">' + s.blurb + '</p>' +
         '<ul class="features">' + s.features.map(function(f){return "<li>"+f+"</li>";}).join("") + '</ul></div>' +
     '</div>' +
-    '<div class="sizes"><h2>Sizes &amp; Pricing</h2>' + rows +
-      '<p class="pnote">Prices shown are for the unit. Delivery, installation, and leg/feeder combos are quoted separately. Custom builds available — <a href="cart.html">add to cart &amp; request a quote</a> or call 318-540-4499.</p>' +
+    '<div class="sizes"><h2>' + (isItem ? "Options &amp; Pricing" : "Sizes &amp; Pricing") + '</h2>' + rows +
+      '<p class="pnote">Prices shown are per unit. Delivery, installation, and combos are quoted separately. Custom builds available — <a href="cart.html">add to cart &amp; request a quote</a> or call 318-540-4499.</p>' +
     '</div>';
 })();
 </script>
