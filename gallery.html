@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery — Antler Shed Oklahoma</title>
+<link rel="stylesheet" href="store.css">
+<style>
+  .ghero{text-align:center;padding:30px 0 10px}
+  .ghero h1{color:#3b2f2a;font-size:32px;margin:.2em 0}
+  .ghero p{color:#7a6a58;max-width:560px;margin:8px auto}
+  .ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;padding:14px 0 50px}
+  .gphoto{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:transform .15s}
+  .gphoto:hover{transform:scale(1.02)}
+  #lb{position:fixed;inset:0;background:rgba(20,15,10,.92);display:none;align-items:center;justify-content:center;z-index:100000;padding:20px}
+  #lb.open{display:flex}
+  #lb img{max-width:96%;max-height:92%;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+  #lb .x{position:absolute;top:18px;right:24px;color:#fff;font-size:34px;cursor:pointer;line-height:1}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a href="index.html" class="brand">🦌 ANTLER SHED OKLAHOMA</a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="product.html?series=slider">Blinds</a>
+    <a href="product.html?series=accessories">Accessories</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span class="cart-badge">0</span></a>
+  </div>
+</div></nav>
+
+<main class="wrap">
+  <div class="ghero">
+    <div class="crumbs"><a href="index.html">Home</a> › Gallery</div>
+    <h1>From the Field</h1>
+    <p>Real feeders and setups from Antler Shed Oklahoma. Built to last, ready for the season. Tap any photo to enlarge.</p>
+  </div>
+  <div class="ggrid">
+    <img class="gphoto" src="images/gallery/feeder-1.jpg" alt="Antler Shed feeder 1" loading="lazy">
+    <img class="gphoto" src="images/gallery/feeder-2.jpg" alt="Antler Shed feeder 2" loading="lazy">
+    <img class="gphoto" src="images/gallery/feeder-3.jpg" alt="Antler Shed feeder 3" loading="lazy">
+    <img class="gphoto" src="images/gallery/feeder-4.jpg" alt="Antler Shed feeder 4" loading="lazy">
+    <img class="gphoto" src="images/gallery/feeder-5.jpg" alt="Antler Shed feeder 5" loading="lazy">
+    <img class="gphoto" src="images/gallery/feeder-6.jpg" alt="Antler Shed feeder 6" loading="lazy">
+    <img class="gphoto" src="images/gallery/feeder-7.jpg" alt="Antler Shed feeder 7" loading="lazy">
+    <img class="gphoto" src="images/gallery/feeder-8.jpg" alt="Antler Shed feeder 8" loading="lazy">
+  </div>
+  <p style="text-align:center;color:#7a6a58;padding-bottom:40px">Want one set up on your property? <a href="index.html#contact" style="color:#7a5230;font-weight:700">Book an appointment →</a></p>
+</main>
+
+<footer><div class="wrap">
+  Antler Shed Oklahoma · 705 S. Ranchwood Blvd, Yukon, OK 73099 · <a href="tel:3185404499">318-540-4499</a> · <a href="mailto:Antlershedok@gmail.com">Antlershedok@gmail.com</a> · By appointment only
+</div></footer>
+
+<div id="lb"><span class="x">&times;</span><img src="" alt=""></div>
+<script>
+  (function(){
+    var lb=document.getElementById("lb"), lbimg=lb.querySelector("img");
+    document.querySelectorAll(".gphoto").forEach(function(p){p.addEventListener("click",function(){lbimg.src=p.src;lb.classList.add("open");});});
+    function close(){lb.classList.remove("open");lbimg.src="";}
+    lb.addEventListener("click",close);
+  })();
+</script>
+<script src="chat-widget.js"></script>
+</body>
+</html>
