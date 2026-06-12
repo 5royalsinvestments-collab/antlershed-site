@@ -28,6 +28,7 @@ a{color:var(--brown2)}
 .sizes{margin:10px 0 40px}
 .sizes h2{color:var(--brown);font-size:22px;border-bottom:2px solid var(--khaki);padding-bottom:8px}
 .size-row{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--khaki);flex-wrap:wrap}
+.row-thumb{width:92px;height:70px;object-fit:cover;border-radius:8px;flex:0 0 auto;box-shadow:0 2px 8px rgba(0,0,0,.12);cursor:pointer}
 .size-main{flex:1;min-width:220px}
 .size-main .sz{font-weight:800;font-size:18px;color:var(--ink)}
 .size-main .meta{color:var(--muted);font-size:14px}

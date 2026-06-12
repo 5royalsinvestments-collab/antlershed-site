@@ -38,12 +38,16 @@
   document.title = "Antler Shed Oklahoma — " + s.name;
   document.getElementById("crumb-name").textContent = s.name;
   function money(n){ return "$" + Number(n).toLocaleString("en-US"); }
+  var isAcc = (key === "accessories");
   var rows = s.items.map(function(it){
+    var label = isAcc ? (it.size + " " + it.weight) : (s.name.replace(" Series","") + " " + it.size);
+    var cartName = (isAcc ? (it.weight + " " + it.size) : (s.name + " " + it.size)).replace(/"/g,'');
     return '<div class="size-row">' +
-      '<div class="size-main"><div class="sz">' + s.name.replace(" Series","") + " " + it.size + '</div>' +
-        '<div class="meta">Model ' + it.model + ' · ' + it.weight + (it.note ? ' · ' + it.note : '') + '</div></div>' +
+      (it.image ? '<img class="row-thumb" src="' + it.image + '" alt="' + it.model + '" loading="lazy">' : '') +
+      '<div class="size-main"><div class="sz">' + label + '</div>' +
+        '<div class="meta">Model ' + it.model + (it.note ? ' · ' + it.note : '') + '</div></div>' +
       '<div class="size-price">' + money(it.price) + '</div>' +
-      '<button class="btn-add" data-add="' + it.id + '" data-name="' + (s.name + ' ' + it.size).replace(/"/g,'') + '" data-price="' + it.price + '">Add to Cart</button>' +
+      '<button class="btn-add" data-add="' + it.id + '" data-name="' + cartName + '" data-price="' + it.price + '">Add to Cart</button>' +
     '</div>';
   }).join("");
   document.getElementById("prod-body").innerHTML =

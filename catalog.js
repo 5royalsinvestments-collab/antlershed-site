@@ -44,17 +44,20 @@ window.ANTLER_CATALOG = {
     blurb: "Everything to get your blind set up and your stand fed. Leg & stair kits and shed sleds are 16-gauge powder-coated steel; feeders by Texas Wildlife Supply.",
     features: ["16-gauge powder-coated steel kits", "Pre-made or DIY leg & ladder kits", "Shed sleds for ground setups", "Gravity & broadcast feeders"],
     items: [
-      { id: "5-LSK", size: "5 ft", model: "5-LSK", price: 1175, weight: "Leg & Stair Kit", note: "Staircase, platform, double hand rails, 3×3 legs" },
-      { id: "8-LSK", size: "8 ft", model: "8-LSK", price: 1375, weight: "Leg & Stair Kit", note: "Staircase, platform, double hand rails, 3×3 legs" },
-      { id: "12-LSK", size: "12 ft", model: "12-LSK", price: 1775, weight: "Leg & Stair Kit", note: "Staircase, platform, double hand rails, 3×3 legs" },
-      { id: "1-SSK", size: "1 ft", model: "1-SSK", price: 375, weight: "Shed Sled", note: "Stubby shed sled on 8' treated 2×6 sleds" },
-      { id: "3-SSK", size: "3 ft", model: "3-SSK", price: 800, weight: "Shed Sled", note: "Shed sled on 8' treated 2×6 sleds with ladder" },
-      { id: "F-350G", size: "350#", model: "F-350G", price: 650, weight: "Gravity Feeder", note: "350 lb gravity-feed (Texas Wildlife Supply)" },
-      { id: "F-600G", size: "600#", model: "F-600G", price: 800, weight: "Gravity Feeder", note: "600 lb gravity-feed (TWS)" },
-      { id: "F-600T", size: "600# + Timer", model: "F-600T", price: 1200, weight: "Gravity Feeder", note: "600 lb gravity-feed with timer (TWS)" },
-      { id: "F-2000", size: "2000# + Catwalk", model: "F-2000", price: 1900, weight: "Gravity Feeder", note: "2,000 lb with catwalk & ladder (TWS)" },
-      { id: "F-600B", size: "600# Lucky Buck", model: "F-600B", price: 800, weight: "Broadcast Feeder", note: "600 lb broadcast feeder (TWS)" },
-      { id: "F-2000B", size: "2000# Lucky Buck", model: "F-2000B", price: 1500, weight: "Broadcast Feeder", note: "2,000 lb broadcast feeder (TWS)" }
+      { id: "5-LSK", size: "5 ft", model: "5-LSK", price: 1175, weight: "Leg & Stair Kit", note: "Staircase, platform, double hand rails, 3×3 legs", image: "images/legkit-premade.jpg" },
+      { id: "8-LSK", size: "8 ft", model: "8-LSK", price: 1375, weight: "Leg & Stair Kit", note: "Staircase, platform, double hand rails, 3×3 legs", image: "images/legkit-premade.jpg" },
+      { id: "12-LSK", size: "12 ft", model: "12-LSK", price: 1775, weight: "Leg & Stair Kit", note: "Staircase, platform, double hand rails, 3×3 legs", image: "images/legkit-diy.jpg" },
+      { id: "1-SSK", size: "1 ft", model: "1-SSK", price: 375, weight: "Shed Sled", note: "Stubby shed sled on 8' treated 2×6 sleds", image: "images/shedsled.jpg" },
+      { id: "3-SSK", size: "3 ft", model: "3-SSK", price: 800, weight: "Shed Sled", note: "Shed sled on 8' treated 2×6 sleds with ladder", image: "images/shedsled.jpg" },
+      { id: "F-50R", size: "50#", model: "F-50R", price: 400, weight: "Monster Road Feeder", note: "50 lb road feeder with remote (TWS)", image: "images/gallery/feeder-8.jpg" },
+      { id: "F-100R", size: "100#", model: "F-100R", price: 450, weight: "Monster Road Feeder", note: "100 lb road feeder with remote (TWS)", image: "images/gallery/feeder-7.jpg" },
+      { id: "F-350G", size: "350#", model: "F-350G", price: 650, weight: "Gravity Feeder", note: "350 lb gravity-feed (Texas Wildlife Supply)", image: "images/gallery/feeder-2.jpg" },
+      { id: "F-600G", size: "600#", model: "F-600G", price: 800, weight: "Gravity Feeder", note: "600 lb gravity-feed (TWS)", image: "images/gallery/feeder-3.jpg" },
+      { id: "F-600T", size: "600# + Timer", model: "F-600T", price: 1200, weight: "Gravity Feeder", note: "600 lb gravity-feed with timer (TWS)", image: "images/gallery/feeder-3.jpg" },
+      { id: "F-2000", size: "2000# + Catwalk", model: "F-2000", price: 1900, weight: "Gravity Feeder", note: "2,000 lb with catwalk & ladder (TWS)", image: "images/gallery/feeder-1.jpg" },
+      { id: "F-2000T", size: "2000# + Catwalk + Timer", model: "F-2000T", price: 2300, weight: "Gravity Feeder", note: "2,000 lb with catwalk, ladder & timer (TWS)", image: "images/gallery/feeder-1.jpg" },
+      { id: "F-600B", size: "600# Lucky Buck", model: "F-600B", price: 800, weight: "Broadcast Feeder", note: "600 lb Lucky Buck broadcast feeder (TWS)", image: "images/gallery/feeder-5.jpg" },
+      { id: "F-2000B", size: "2000# Lucky Buck", model: "F-2000B", price: 1500, weight: "Broadcast Feeder", note: "2,000 lb Lucky Buck broadcast feeder (TWS)", image: "images/gallery/feeder-6.jpg" }
     ]
   }
 };
