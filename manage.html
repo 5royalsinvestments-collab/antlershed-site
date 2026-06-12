@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antler Shed — Product Manager</title>
+<style>
+  :root{ --brown:#5a3d2b; --tan:#7a5230; --bg:#f6f1ea; --line:#e3d8c9; --ok:#2e7d32; --red:#b3261e; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:#2b2018}
+  header{background:var(--brown);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  header h1{font-size:18px;margin:0}
+  header .who{font-size:12px;opacity:.85}
+  .wrap{max-width:920px;margin:0 auto;padding:18px}
+  .btn{border:0;border-radius:8px;padding:10px 16px;font-size:15px;font-weight:600;cursor:pointer}
+  .btn-primary{background:var(--tan);color:#fff}
+  .btn-ghost{background:#fff;color:var(--tan);border:1px solid var(--line)}
+  .btn-red{background:#fff;color:var(--red);border:1px solid #e7c9c6}
+  .btn-lg{padding:14px 20px;font-size:16px;width:100%}
+  /* gate */
+  #gate{max-width:380px;margin:8vh auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+  #gate h2{margin:.2em 0 .1em;color:var(--brown)}
+  #gate p{color:#7a6a58;font-size:14px;margin:.2em 0 18px}
+  input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font-size:15px;background:#fff;font-family:inherit}
+  label{display:block;text-align:left;font-size:13px;font-weight:600;color:#5a4a38;margin:12px 0 4px}
+  .gate-err{color:var(--red);font-size:13px;min-height:18px;margin-top:10px}
+  /* list */
+  .series-block{margin:0 0 26px}
+  .series-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px}
+  .series-head h3{margin:0;color:var(--brown);font-size:17px;text-transform:capitalize}
+  .card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .card img{width:54px;height:54px;object-fit:cover;border-radius:7px;background:#eee;flex:0 0 auto}
+  .card .ph{width:54px;height:54px;border-radius:7px;background:#efe7db;display:flex;align-items:center;justify-content:center;color:#b7a78f;font-size:11px;flex:0 0 auto}
+  .card .info{flex:1;min-width:0}
+  .card .info b{display:block;font-size:15px}
+  .card .info span{display:block;font-size:12px;color:#7a6a58;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card .price{font-weight:700;color:var(--brown);white-space:nowrap}
+  .card.off{opacity:.5}
+  .card .acts{display:flex;gap:6px}
+  .card .acts .btn{padding:7px 11px;font-size:13px}
+  .muted{color:#9a8a78;font-size:13px}
+  /* modal */
+  #modal{position:fixed;inset:0;background:rgba(30,22,15,.55);display:none;align-items:flex-start;justify-content:center;padding:18px;overflow:auto;z-index:50}
+  #modal.open{display:flex}
+  .sheet{background:#fff;border-radius:14px;max-width:480px;width:100%;padding:22px;margin:24px 0}
+  .sheet h3{margin:0 0 4px;color:var(--brown)}
+  .row2{display:flex;gap:10px}.row2>div{flex:1}
+  .chk{display:flex;align-items:center;gap:8px;margin-top:14px}.chk input{width:auto}
+  .sheet-acts{display:flex;gap:10px;margin-top:20px}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#2b2018;color:#fff;padding:11px 18px;border-radius:9px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:80}
+  .toast.show{opacity:1}
+  .hint{font-size:12px;color:#9a8a78;margin-top:4px}
+</style>
+</head>
+<body>
+
+<!-- PASSCODE GATE -->
+<div id="gate">
+  <div style="font-size:34px">🦌🔒</div>
+  <h2>Product Manager</h2>
+  <p>Antler Shed Oklahoma — enter your passcode to manage the website catalog.</p>
+  <input id="pass" type="password" placeholder="Passcode" autocomplete="off">
+  <div class="gate-err" id="gateErr"></div>
+  <button class="btn btn-primary btn-lg" id="gateBtn" style="margin-top:6px">Unlock</button>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+  <header>
+    <div><h1>🦌 Product Manager</h1><div class="who">Antler Shed Oklahoma · changes go live on the website</div></div>
+    <button class="btn btn-ghost" id="lockBtn">Lock</button>
+  </header>
+  <div class="wrap">
+    <button class="btn btn-primary btn-lg" id="addBtn" style="margin-bottom:18px">＋ Add a product</button>
+    <div id="list"><p class="muted">Loading…</p></div>
+    <p class="muted" style="text-align:center;margin-top:26px">After saving, website changes appear within a minute or two. If you don't see them, refresh the website page.</p>
+  </div>
+</div>
+
+<!-- EDIT MODAL -->
+<div id="modal">
+  <div class="sheet">
+    <h3 id="mTitle">Edit product</h3>
+    <p class="muted" id="mSub">Fill in the details, then Save.</p>
+    <input type="hidden" id="f_id">
+    <label>Category</label>
+    <select id="f_series">
+      <option value="slider">Blinds — Slider Series</option>
+      <option value="drop">Blinds — Drop Series</option>
+      <option value="bowgun">Blinds — Bow/Gun Series</option>
+      <option value="feeders">Feeders</option>
+      <option value="accessories">Accessories</option>
+    </select>
+    <div class="row2">
+      <div><label>Model / ID</label><input id="f_model" placeholder="e.g. F-350G"><div class="hint">Short code, must be unique</div></div>
+      <div><label>Price ($)</label><input id="f_price" type="number" min="0" step="1" placeholder="650"></div>
+    </div>
+    <div class="row2">
+      <div><label>Size</label><input id="f_size" placeholder="e.g. 350# or 5×6"></div>
+      <div><label>Type / weight</label><input id="f_weight" placeholder="e.g. Gravity Feeder"></div>
+    </div>
+    <label>Description</label>
+    <textarea id="f_note" rows="2" placeholder="Short description shown to customers"></textarea>
+    <label>Photo</label>
+    <input id="f_image" list="imglist" placeholder="Paste an image link, or pick an existing photo">
+    <datalist id="imglist">
+      <option value="images/slider.jpg">
+      <option value="images/drop.jpg">
+      <option value="images/bowgun.jpg">
+      <option value="images/legkit-premade.jpg">
+      <option value="images/legkit-diy.jpg">
+      <option value="images/shedsled.jpg">
+      <option value="images/gallery/feeder-1.jpg?v=2">
+      <option value="images/gallery/feeder-2.jpg?v=2">
+      <option value="images/gallery/feeder-3.jpg?v=2">
+      <option value="images/gallery/feeder-5.jpg?v=2">
+      <option value="images/gallery/feeder-6.jpg?v=2">
+      <option value="images/gallery/feeder-7.jpg?v=2">
+      <option value="images/gallery/feeder-8.jpg?v=2">
+    </datalist>
+    <div id="imgPrev" style="margin-top:8px"></div>
+    <div class="row2" style="align-items:flex-end">
+      <div><label>Display order</label><input id="f_sort" type="number" step="1" placeholder="0"><div class="hint">Lower shows first</div></div>
+      <div class="chk"><input type="checkbox" id="f_active" checked><label style="margin:0">Show on website</label></div>
+    </div>
+    <div class="sheet-acts">
+      <button class="btn btn-ghost" id="mCancel" style="flex:1">Cancel</button>
+      <button class="btn btn-primary" id="mSave" style="flex:2">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  var EP = "https://tradesuiteai.app.n8n.cloud/webhook/antlershed-admin";
+  var SERIES_LABEL = { slider:"Slider Series (Blinds)", drop:"Drop Series (Blinds)", bowgun:"Bow/Gun Series (Blinds)", feeders:"Feeders", accessories:"Accessories" };
+  var ORDER = ["slider","drop","bowgun","feeders","accessories"];
+  var pass = "";
+  var products = [];
+
+  var $ = function(id){ return document.getElementById(id); };
+  function money(n){ return "$" + Number(n||0).toLocaleString("en-US"); }
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+  function toast(msg){ var t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(function(){t.classList.remove("show");},2200); }
+
+  function api(payload){
+    payload.passcode = pass;
+    return fetch(EP, { method:"POST", headers:{ "Content-Type":"text/plain" }, body: JSON.stringify(payload) })
+      .then(function(r){ return r.json(); });
+  }
+
+  // ---- gate ----
+  function tryUnlock(){
+    var p = $("pass").value.trim();
+    if(!p){ return; }
+    pass = p;
+    $("gateErr").textContent = "Checking…";
+    api({ action:"list" }).then(function(res){
+      if(res && res.ok){
+        sessionStorage.setItem("as_pass", pass);
+        products = res.products || [];
+        $("gate").style.display="none"; $("app").style.display="block";
+        render();
+      } else {
+        pass=""; $("gateErr").textContent = (res && res.error) || "Wrong passcode.";
+      }
+    }).catch(function(){ pass=""; $("gateErr").textContent="Network error — try again."; });
+  }
+  $("gateBtn").addEventListener("click", tryUnlock);
+  $("pass").addEventListener("keydown", function(e){ if(e.key==="Enter") tryUnlock(); });
+  $("lockBtn").addEventListener("click", function(){ sessionStorage.removeItem("as_pass"); location.reload(); });
+
+  // auto-unlock if passcode saved this session
+  var saved = sessionStorage.getItem("as_pass");
+  if(saved){ $("pass").value = saved; tryUnlock(); }
+
+  // ---- list ----
+  function refresh(){
+    return api({ action:"list" }).then(function(res){ if(res&&res.ok){ products=res.products||[]; render(); } });
+  }
+  function render(){
+    var byS = {}; ORDER.forEach(function(k){ byS[k]=[]; });
+    products.forEach(function(p){ (byS[p.series]||(byS[p.series]=[])).push(p); });
+    var html = "";
+    ORDER.forEach(function(k){
+      var arr = byS[k]||[];
+      html += '<div class="series-block"><div class="series-head"><h3>'+esc(SERIES_LABEL[k]||k)+' <span class="muted">('+arr.length+')</span></h3>'+
+        '<button class="btn btn-ghost" data-add="'+k+'" style="padding:7px 12px;font-size:13px">＋ Add</button></div>';
+      if(!arr.length){ html += '<p class="muted" style="margin:0 0 8px">No items yet.</p>'; }
+      arr.forEach(function(p){
+        var img = p.image ? '<img src="'+esc(p.image)+'" alt="">' : '<div class="ph">no photo</div>';
+        html += '<div class="card'+(p.active?'':' off')+'">'+img+
+          '<div class="info"><b>'+esc(p.model_id)+(p.active?'':' <span class="muted">(hidden)</span>')+'</b>'+
+          '<span>'+esc([p.size,p.weight].filter(Boolean).join(" · "))+(p.note?' — '+esc(p.note):'')+'</span></div>'+
+          '<div class="price">'+money(p.price)+'</div>'+
+          '<div class="acts"><button class="btn btn-ghost" data-edit="'+p.id+'">Edit</button>'+
+          '<button class="btn btn-red" data-del="'+p.id+'">✕</button></div></div>';
+      });
+      html += '</div>';
+    });
+    $("list").innerHTML = html;
+  }
+
+  // event delegation for list buttons
+  $("list").addEventListener("click", function(e){
+    var t = e.target.closest("button"); if(!t) return;
+    if(t.dataset.add){ openModal(null, t.dataset.add); }
+    else if(t.dataset.edit){ openModal(products.filter(function(p){return String(p.id)===t.dataset.edit;})[0]); }
+    else if(t.dataset.del){ doDelete(t.dataset.del); }
+  });
+  $("addBtn").addEventListener("click", function(){ openModal(null, "feeders"); });
+
+  // ---- modal ----
+  function openModal(p, presetSeries){
+    $("f_id").value   = p ? p.id : "";
+    $("f_series").value = p ? p.series : (presetSeries||"feeders");
+    $("f_model").value  = p ? (p.model_id||"") : "";
+    $("f_price").value  = p ? (p.price||"") : "";
+    $("f_size").value   = p ? (p.size||"") : "";
+    $("f_weight").value = p ? (p.weight||"") : "";
+    $("f_note").value   = p ? (p.note||"") : "";
+    $("f_image").value  = p ? (p.image||"") : "";
+    $("f_sort").value   = p ? (p.sort||0) : 0;
+    $("f_active").checked = p ? !!p.active : true;
+    $("mTitle").textContent = p ? "Edit product" : "Add product";
+    showPrev();
+    $("modal").classList.add("open");
+  }
+  function closeModal(){ $("modal").classList.remove("open"); }
+  $("mCancel").addEventListener("click", closeModal);
+  $("modal").addEventListener("click", function(e){ if(e.target===$("modal")) closeModal(); });
+  function showPrev(){ var v=$("f_image").value.trim(); $("imgPrev").innerHTML = v ? '<img src="'+esc(v)+'" style="max-height:90px;border-radius:8px;border:1px solid #e3d8c9">' : ''; }
+  $("f_image").addEventListener("input", showPrev);
+
+  $("mSave").addEventListener("click", function(){
+    var prod = {
+      series: $("f_series").value,
+      model_id: $("f_model").value.trim(),
+      price: $("f_price").value,
+      size: $("f_size").value.trim(),
+      weight: $("f_weight").value.trim(),
+      note: $("f_note").value.trim(),
+      image: $("f_image").value.trim(),
+      sort: $("f_sort").value,
+      active: $("f_active").checked
+    };
+    if($("f_id").value) prod.id = Number($("f_id").value);
+    if(!prod.model_id){ toast("Model / ID is required"); return; }
+    $("mSave").textContent="Saving…"; $("mSave").disabled=true;
+    api({ action:"save", product: prod }).then(function(res){
+      $("mSave").textContent="Save"; $("mSave").disabled=false;
+      if(res && res.ok){ closeModal(); toast("Saved ✓"); refresh(); }
+      else { toast((res&&res.error)||"Save failed"); }
+    }).catch(function(){ $("mSave").textContent="Save"; $("mSave").disabled=false; toast("Network error"); });
+  });
+
+  function doDelete(id){
+    var p = products.filter(function(x){return String(x.id)===String(id);})[0];
+    if(!confirm("Delete "+(p?p.model_id:"this product")+"? This removes it from the website.")) return;
+    api({ action:"delete", id: Number(id) }).then(function(res){
+      if(res && res.ok){ toast("Deleted"); refresh(); } else { toast((res&&res.error)||"Delete failed"); }
+    });
+  }
+})();
+</script>
+</body>
+</html>
