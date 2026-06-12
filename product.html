@@ -14,6 +14,7 @@
     <a href="product.html?series=slider">Slider</a>
     <a href="product.html?series=drop">Drop</a>
     <a href="product.html?series=bowgun">Bow/Gun</a>
+    <a href="product.html?series=feeders">Feeders</a>
     <a href="product.html?series=accessories">Accessories</a>
     <a href="cart.html" class="cart-link">🛒 Cart <span class="cart-badge">0</span></a>
   </div>
@@ -38,7 +39,7 @@
   document.title = "Antler Shed Oklahoma — " + s.name;
   document.getElementById("crumb-name").textContent = s.name;
   function money(n){ return "$" + Number(n).toLocaleString("en-US"); }
-  var isAcc = (key === "accessories");
+  var isAcc = (key === "accessories" || key === "feeders");
   var rows = s.items.map(function(it){
     var label = isAcc ? (it.size + " " + it.weight) : (s.name.replace(" Series","") + " " + it.size);
     var cartName = (isAcc ? (it.weight + " " + it.size) : (s.name + " " + it.size)).replace(/"/g,'');
