@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Video Library — Antler Shed Oklahoma</title>
+<link rel="stylesheet" href="store.css?v=3">
+<style>
+  .vhero{text-align:center;padding:30px 0 6px}
+  .vhero h1{color:#3b2f2a;font-size:32px;margin:.2em 0}
+  .vhero p{color:#7a6a58;max-width:620px;margin:8px auto}
+  .vsec{margin:26px 0}
+  .vsec h2{color:#3b2f2a;font-size:22px;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+  .vsec .sub{color:#7a6a58;font-size:14px;margin:0 0 14px}
+  .vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+  .vcard{background:#fff;border:1px solid #e3d8c9;border-radius:12px;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+  .vframe{position:relative;width:100%;aspect-ratio:16/9;background:#1a140f;cursor:pointer;overflow:hidden}
+  .vframe img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .25s,opacity .2s}
+  .vframe:hover img{transform:scale(1.04);opacity:.85}
+  .vplay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .vplay span{width:64px;height:64px;border-radius:50%;background:rgba(122,82,48,.92);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+  .vplay span:after{content:"";border-style:solid;border-width:11px 0 11px 19px;border-color:transparent transparent transparent #fff;margin-left:5px}
+  .vframe iframe{width:100%;height:100%;border:0;display:block}
+  .vmeta{padding:12px 14px;font-weight:600;color:#3b2f2a;font-size:15px;line-height:1.35}
+  .vnote{background:#fdf6ec;border:1px solid #ecdcc4;border-radius:10px;padding:14px 18px;color:#6b5b46;font-size:14px;max-width:760px;margin:6px auto 0;text-align:center}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="wrap">
+  <a href="index.html" class="brand">🦌 ANTLER SHED OKLAHOMA</a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="product.html?cat=blinds">Blinds</a>
+    <a href="product.html?series=feeders">Feeders</a>
+    <a href="product.html?series=accessories">Accessories</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="videos.html">Videos</a>
+    <a href="index.html#contact">Contact</a>
+    <a href="cart.html" class="cart-link">🛒 Cart <span class="cart-badge">0</span></a>
+  </div>
+</div></nav>
+
+<main class="wrap">
+  <div class="vhero">
+    <div class="crumbs"><a href="index.html">Home</a> › Videos</div>
+    <h1>Video Library</h1>
+    <p>See the blinds in action, tour the features, and follow along with our how-to guides. Tap any video to play.</p>
+  </div>
+  <div id="vroot"></div>
+  <div class="vnote">Videos courtesy of The Antler Shed Deer Blinds. Want one of these set up on your property? <a href="index.html#contact" style="color:#7a5230;font-weight:700">Book an appointment →</a></div>
+</main>
+
+<footer><div class="wrap">
+  Antler Shed Oklahoma · 705 S. Ranchwood Blvd, Yukon, OK 73099 · <a href="tel:3185404499">318-540-4499</a> · <a href="mailto:Antlershedok@gmail.com">Antlershedok@gmail.com</a> · By appointment only
+</div></footer>
+
+<script>
+(function(){
+  var SECTIONS = [
+    { title: "🎬 Demos", sub: "The blinds in action.", vids: [
+      ["uGShe0NZhIk", "Deluxe Bow Blind — A Luxury Deer Blind for Bow Hunters"],
+      ["KuZZXZRwIqI", "Drop Window Demo"],
+      ["4SFPWJKAMqE", "Drop Window Demo — From Outside"],
+      ["BAMmVT1wdv4", "Deer Stand Demo"]
+    ]},
+    { title: "✨ Features", sub: "What makes an Antler Shed blind built to last.", vids: [
+      ["uEQDhby1aqU", "Interior Features — Luxury Hunting Blinds"],
+      ["ljK5QBIZ1mg", "Exterior Features — Hand-Crafted & Durable"],
+      ["DekByfKHR0s", "Window Options"],
+      ["IYdDYnaPGWA", "Shed Sled — Mobile Box Blind"],
+      ["Ngj1OJeQXNY", "Leg & Ladder Kit — DIY Tower Blind"],
+      ["n1yEYjTVpC4", "Meet Our Team"]
+    ]},
+    { title: "🔧 How-To Guides", sub: "Simple maintenance, step by step.", vids: [
+      ["heDeylCOdqs", "Slider Series — Window Track & Glass Replacement"],
+      ["D3oxFwb1fyE", "Drop Series — Window Track & Glass Replacement"]
+    ]}
+  ];
+  var root = document.getElementById("vroot");
+  SECTIONS.forEach(function(sec){
+    var html = '<div class="vsec"><h2>' + sec.title + '</h2><div class="sub">' + sec.sub + '</div><div class="vgrid">';
+    html += sec.vids.map(function(v){
+      return '<div class="vcard"><div class="vframe" data-id="' + v[0] + '">' +
+        '<img loading="lazy" src="https://i.ytimg.com/vi/' + v[0] + '/hqdefault.jpg" alt="' + v[1].replace(/"/g,'') + '">' +
+        '<div class="vplay"><span></span></div></div>' +
+        '<div class="vmeta">' + v[1] + '</div></div>';
+    }).join("");
+    html += '</div></div>';
+    root.insertAdjacentHTML("beforeend", html);
+  });
+  root.addEventListener("click", function(e){
+    var f = e.target.closest(".vframe"); if(!f || f.dataset.loaded) return;
+    f.dataset.loaded = "1";
+    f.innerHTML = '<iframe src="https://www.youtube.com/embed/' + f.dataset.id + '?autoplay=1&rel=0&modestbranding=1" title="Antler Shed video" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+  });
+})();
+</script>
+<script src="chat-widget.js"></script>
+</body>
+</html>
