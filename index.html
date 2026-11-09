@@ -481,7 +481,7 @@ footer{background:var(--brown);color:var(--khaki);padding:2.5rem 1.25rem 1.5rem}
 
       <div class="contact-form">
         <h3>Request an Appointment</h3>
-        <form action="#" method="post" novalidate>
+        <form id="lead-form" novalidate>
           <div class="form-group">
             <label for="f-name">Full Name *</label>
             <input type="text" id="f-name" name="name" placeholder="Your name" required>
@@ -499,8 +499,59 @@ footer{background:var(--brown);color:var(--khaki);padding:2.5rem 1.25rem 1.5rem}
             <textarea id="f-need" name="message" placeholder="Tell us which blind series you're interested in, preferred size, any custom requirements, or questions about accessories and installation…"></textarea>
           </div>
           <button type="submit" class="btn btn-green form-submit">Send Appointment Request</button>
+          <p id="lead-status" style="margin:10px 0 0;font-size:14px;color:#7a6a58;display:none"></p>
         </form>
       </div>
+
+      <!-- Lead capture via FormSubmit (no account / no captcha). Emails every lead to DEST.
+           DEST is temporarily Ed's inbox for proof; swap to Antlershedok@gmail.com to send
+           leads to the owner (he clicks the one-time "Activate" link FormSubmit emails him).
+           If the network call ever fails, falls back to the visitor's own email app. -->
+      <script>
+      (function () {
+        var DEST = "don.e.prince8@gmail.com";                      // ← swap to Antlershedok@gmail.com to route to owner
+        var LEAD_EP = "https://formsubmit.co/ajax/" + DEST;
+        var form = document.getElementById("lead-form");
+        if (!form) return;
+        var status = document.getElementById("lead-status");
+        function show(msg, ok) {
+          status.style.display = "block";
+          status.style.color = ok ? "#2f7a3b" : "#a1442f";
+          status.textContent = msg;
+        }
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var name = form.name.value.trim(), phone = form.phone.value.trim();
+          var email = form.email.value.trim(), message = form.message.value.trim();
+          if (!name || !phone) { show("Please add your name and phone number.", false); return; }
+          var btn = form.querySelector('[type=submit]');
+          btn.disabled = true; btn.textContent = "Sending…";
+          var payload = {
+            name: name, phone: phone, email: email || "(not provided)", message: message || "(none)",
+            _subject: "🦌 New Antler Shed Lead — " + name,
+            _template: "table", _captcha: "false"
+          };
+          fetch(LEAD_EP, { method: "POST",
+                           headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                           body: JSON.stringify(payload) })
+            .then(function (r) { if (!r.ok) throw new Error("bad status"); return r.json(); })
+            .then(function () {
+              form.reset(); btn.disabled = false; btn.textContent = "Send Appointment Request";
+              show("✅ Thanks, " + name + "! We got your request and will call you at " + phone + " soon.", true);
+            })
+            .catch(function () {
+              // Fallback: hand the lead off via the visitor's own email app so it still reaches the shop.
+              btn.disabled = false; btn.textContent = "Send Appointment Request";
+              var body = encodeURIComponent(
+                "Name: " + name + "\nPhone: " + phone + "\nEmail: " + email +
+                "\n\nLooking for:\n" + message);
+              var subj = encodeURIComponent("Appointment request — " + name);
+              window.location.href = "mailto:Antlershedok@gmail.com?subject=" + subj + "&body=" + body;
+              show("Opening your email to finish sending — or just call 318-540-4499.", false);
+            });
+        });
+      })();
+      </script>
 
     </div>
   </div>
